@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const lastUpdated = "2026年5月22日";
+---
+
+<BaseLayout
+  title="プライバシーポリシー | ローン計算ツール集"
+  description="ローン計算ツール集のプライバシーポリシー。アクセス解析（Google Analytics 4）の利用・Cookie の取り扱い・免責事項について記載しています。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "プライバシーポリシー" },
+  ]}
+>
+  <article>
+    <h1 class="text-3xl font-bold tracking-tight">プライバシーポリシー</h1>
+
+    <p class="mt-4 text-slate-700">
+      「ローン計算ツール集」（以下、本サイト）の運営者は、本サイトを利用する皆様のプライバシーを尊重し、その取り扱いに細心の注意を払います。本ポリシーでは、本サイトが収集する情報と、その利用方法について記載しています。
+    </p>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">収集する情報</h2>
+      <p class="text-slate-700">
+        本サイトは、計算機能の利用にあたって個人情報（氏名・住所・メールアドレス等）の入力を求めません。利用者がフォームに入力した借入額・年数・金利等の数値は、ブラウザ上で計算に使用されるのみで、本サイトのサーバーには送信・保存されません。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">アクセス解析ツールの利用</h2>
+      <p class="text-slate-700">
+        本サイトでは、サイト改善のために Google Analytics 4（GA4）を利用しています。GA4 は Cookie を用いて利用者のアクセス情報を匿名で収集します。収集される情報の例: ページの閲覧履歴、滞在時間、参照元 URL、デバイス・ブラウザ情報など。
+      </p>
+      <p class="text-slate-700">
+        GA4 によるデータ収集を拒否したい方は、Google が提供する
+        <a href="https://tools.google.com/dlpage/gaoptout?hl=ja" rel="noopener noreferrer" class="text-slate-900 underline hover:no-underline">
+          Google アナリティクス オプトアウト アドオン
+        </a>
+        をご利用ください。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">Cookie について</h2>
+      <p class="text-slate-700">
+        本サイトでは前項の GA4 によるアクセス解析のために Cookie を使用しています。ブラウザの設定により Cookie の受信を拒否することも可能ですが、その場合、本サイトの一部機能が正常に動作しない可能性があります。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">広告配信について</h2>
+      <p class="text-slate-700">
+        本サイトでは将来的に Google AdSense をはじめとする広告サービスの導入を検討しています。広告サービスの利用を開始した場合は、本ポリシーを更新し、広告配信に関する詳細（Cookie 利用、第三者ベンダーによる広告配信、オプトアウト方法等）を明記します。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">免責事項</h2>
+      <p class="text-slate-700">
+        本サイトに掲載されている計算結果はすべて概算値であり、特定の金融機関や金融商品の借入条件を保証するものではありません。ローン契約に関する判断は利用者ご自身の責任で行ってください。本サイトの情報を利用したことによって発生した損害について、運営者は一切の責任を負いません。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">プライバシーポリシーの変更</h2>
+      <p class="text-slate-700">
+        本ポリシーの内容は、必要に応じて変更されることがあります。重要な変更があった場合は、本ページで通知します。
+      </p>
+    </section>
+
+    <p class="mt-10 text-sm text-slate-500">最終更新日: {lastUpdated}</p>
+  </article>
+</BaseLayout>

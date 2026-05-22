@@ -1,0 +1,61 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="ローン計算ツール集 について | 運営者情報"
+  description="ローン計算ツール集の運営者情報・サイトの目的・信頼性に関する考え方をまとめたページです。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "ローン計算ツール集 について" },
+  ]}
+>
+  <article class="prose-loan">
+    <h1 class="text-3xl font-bold tracking-tight">ローン計算ツール集 について</h1>
+
+    <p class="mt-4 text-slate-700">
+      「ローン計算ツール集」は、住宅ローン・マイカーローン・カードローンなど各種ローンの返済シミュレーションを、誰でも気軽に行えるよう開発された個人運営のツールサイトです。
+    </p>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">運営者</h2>
+      <p class="text-slate-700">ローン計算ツール集 編集部（個人運営）</p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">サイトの目的</h2>
+      <p class="text-slate-700">
+        借入条件（借入額・返済期間・金利）を選ぶだけで、月々の返済額・総返済額・利息総額をその場で計算できるシンプルなツールを提供することを目的としています。
+      </p>
+      <p class="text-slate-700">
+        各ローン種別ごとに代表的な条件パターンを事前に用意し、URL を共有するだけで同じ条件のシミュレーション結果を他の人と共有できるようにしています。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">提供している計算機</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>住宅ローン計算機（公開済み）</li>
+        <li>マイカーローン計算機（準備中）</li>
+        <li>カードローン計算機（準備中）</li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">サイトの信頼性について</h2>
+      <p class="text-slate-700">
+        本サイトの計算結果は元利均等返済方式に基づく概算値です。ボーナス返済・繰上返済・各種手数料・団信保険料などは含まれておらず、実際の借入条件は金融機関の最終審査によって決定されます。
+      </p>
+      <p class="text-slate-700">
+        本サイトは特定の金融機関や金融商品を推奨するものではなく、ローン契約に関する判断はご自身の責任で行ってください。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">お問い合わせ</h2>
+      <p class="text-slate-700">
+        ご意見・ご指摘などは <a href="/contact/" class="text-slate-900 underline hover:no-underline">お問い合わせページ</a> からご連絡ください。
+      </p>
+    </section>
+  </article>
+</BaseLayout>

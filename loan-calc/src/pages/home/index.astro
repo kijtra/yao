@@ -1,0 +1,273 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const amounts = [1000, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 6000, 7000, 8000];
+const yearOptions = [20, 25, 30, 35];
+const rates = [0.5, 1.0, 1.5, 2.0, 2.5];
+---
+
+<BaseLayout
+  title="住宅ローン計算機 | ローン計算ツール集"
+  description="借入額・返済年数・金利を選ぶだけで月々の返済額と総返済額をシミュレーションできる住宅ローン計算機。自由入力モードでは任意の数値で即時計算できます。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "住宅ローン計算機" },
+  ]}
+>
+  <section class="space-y-2">
+    <h1 class="text-3xl font-bold tracking-tight">住宅ローン計算機</h1>
+    <p class="text-slate-600">
+      借入額・返済年数・金利を選ぶと、月々の返済額をその場で計算します。
+      代表的な条件は詳細ページに進んで、返済表や金利・期間の比較も見られます。
+    </p>
+  </section>
+
+  <form
+    id="loan-form"
+    class="mt-8 space-y-5 rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
+  >
+    <div class="flex justify-end">
+      <label class="inline-flex cursor-pointer items-center gap-2 text-xs text-slate-500 hover:text-slate-700">
+        <input
+          type="checkbox"
+          id="free-mode"
+          class="h-3.5 w-3.5 rounded border-slate-300 text-slate-700 focus:ring-slate-400"
+        />
+        <span>自由に入力する（簡易計算機）</span>
+      </label>
+    </div>
+
+    <div id="select-fields" class="grid gap-5 sm:grid-cols-3">
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">借入額（万円）</span>
+        <select
+          name="amount"
+          required
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        >
+          {amounts.map((a) => (
+            <option value={a} selected={a === 3000}>{a.toLocaleString()}万円</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">返済年数</span>
+        <select
+          name="years"
+          required
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        >
+          {yearOptions.map((y) => (
+            <option value={y} selected={y === 35}>{y}年</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">年利（%）</span>
+        <select
+          name="rate"
+          required
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        >
+          {rates.map((r) => {
+            const v = r.toFixed(1);
+            return <option value={v} selected={r === 1.5}>{v}%</option>;
+          })}
+        </select>
+      </label>
+    </div>
+
+    <div id="free-fields" class="hidden grid gap-5 sm:grid-cols-3">
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">借入額（万円）</span>
+        <input
+          type="number"
+          name="amountFree"
+          min="100"
+          max="50000"
+          step="10"
+          value="3000"
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        />
+      </label>
+
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">返済年数</span>
+        <input
+          type="number"
+          name="yearsFree"
+          min="1"
+          max="50"
+          step="1"
+          value="35"
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        />
+      </label>
+
+      <label class="block">
+        <span class="mb-1 block text-sm font-medium text-slate-700">年利（%）</span>
+        <input
+          type="number"
+          name="rateFree"
+          min="0"
+          max="20"
+          step="0.05"
+          value="1.5"
+          class="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-base focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500"
+        />
+      </label>
+    </div>
+
+    <p id="preview-compact" class="text-sm leading-relaxed text-slate-700">
+      月々の概算は
+      <strong id="compact-monthly" class="text-base font-bold text-slate-900 tabular-nums">—</strong>
+      <span class="text-slate-600">（総返済 <span id="compact-total" class="tabular-nums">—</span> / 利息 <span id="compact-interest" class="tabular-nums">—</span>）</span>
+      <span class="text-slate-500">。詳しい結果は以下をクリック↓</span>
+    </p>
+
+    <div id="preview-large" class="hidden rounded-lg bg-slate-50 p-4">
+      <div class="flex items-baseline justify-between gap-3">
+        <span class="text-sm text-slate-500">月々の返済額（概算）</span>
+        <span id="large-monthly" class="text-3xl font-bold tabular-nums text-slate-900">—</span>
+      </div>
+      <div id="large-detail" class="mt-1 text-right text-xs text-slate-500">
+        条件を選んでください
+      </div>
+    </div>
+
+    <div id="submit-area">
+      <button
+        type="submit"
+        id="submit-btn"
+        class="w-full rounded-md bg-slate-900 px-4 py-3 text-base font-medium text-white transition hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2"
+      >
+        計算して詳しいシミュレーションを見る →
+      </button>
+    </div>
+  </form>
+
+  <section class="mt-10 space-y-3 text-slate-700">
+    <h2 class="text-xl font-bold">この計算機について</h2>
+    <p>
+      元利均等返済方式（毎月の返済額が一定）での計算結果を表示します。
+      ボーナス返済・繰上返済は考慮しません。
+    </p>
+    <p class="text-sm text-slate-500">
+      ※計算結果は概算です。実際の借入条件は金融機関の最終審査によります。
+    </p>
+  </section>
+</BaseLayout>
+
+<script>
+  import { calcEqualPayment } from "../../lib/loan/equal-payment";
+
+  const form = document.getElementById("loan-form") as HTMLFormElement | null;
+  const freeToggle = document.getElementById("free-mode") as HTMLInputElement | null;
+  const selectFields = document.getElementById("select-fields");
+  const freeFields = document.getElementById("free-fields");
+  const submitArea = document.getElementById("submit-area");
+  const previewCompact = document.getElementById("preview-compact");
+  const previewLarge = document.getElementById("preview-large");
+  const compactMonthly = document.getElementById("compact-monthly");
+  const compactTotal = document.getElementById("compact-total");
+  const compactInterest = document.getElementById("compact-interest");
+  const largeMonthly = document.getElementById("large-monthly");
+  const largeDetail = document.getElementById("large-detail");
+
+  const amountSelect = form?.querySelector('select[name="amount"]') as HTMLSelectElement | null;
+  const yearsSelect = form?.querySelector('select[name="years"]') as HTMLSelectElement | null;
+  const rateSelect = form?.querySelector('select[name="rate"]') as HTMLSelectElement | null;
+  const amountFreeInput = form?.querySelector('input[name="amountFree"]') as HTMLInputElement | null;
+  const yearsFreeInput = form?.querySelector('input[name="yearsFree"]') as HTMLInputElement | null;
+  const rateFreeInput = form?.querySelector('input[name="rateFree"]') as HTMLInputElement | null;
+
+  if (
+    !form || !freeToggle || !selectFields || !freeFields || !submitArea ||
+    !previewCompact || !previewLarge ||
+    !compactMonthly || !compactTotal || !compactInterest ||
+    !largeMonthly || !largeDetail ||
+    !amountSelect || !yearsSelect || !rateSelect ||
+    !amountFreeInput || !yearsFreeInput || !rateFreeInput
+  ) {
+    throw new Error("loan-form: required element is missing");
+  }
+
+  const yen = (n: number) => `${n.toLocaleString("ja-JP")}円`;
+
+  function currentValues() {
+    const data = new FormData(form as HTMLFormElement);
+    const isFree = (freeToggle as HTMLInputElement).checked;
+    const amount = Number(data.get(isFree ? "amountFree" : "amount"));
+    const years = Number(data.get(isFree ? "yearsFree" : "years"));
+    const rate = Number(data.get(isFree ? "rateFree" : "rate"));
+    return { amount, years, rate, isFree };
+  }
+
+  function isValid(v: { amount: number; years: number; rate: number }): boolean {
+    return (
+      Number.isFinite(v.amount) && v.amount > 0 &&
+      Number.isFinite(v.years) && v.years > 0 &&
+      Number.isFinite(v.rate) && v.rate >= 0
+    );
+  }
+
+  function updatePreview() {
+    const v = currentValues();
+    if (!isValid(v)) {
+      if (v.isFree) {
+        largeMonthly!.textContent = "—";
+        largeDetail!.textContent = "入力値を確認してください";
+      } else {
+        compactMonthly!.textContent = "—";
+        compactTotal!.textContent = "—";
+        compactInterest!.textContent = "—";
+      }
+      return;
+    }
+    const result = calcEqualPayment({ amount: v.amount, years: v.years, rate: v.rate });
+    if (v.isFree) {
+      largeMonthly!.textContent = yen(result.monthly);
+      largeDetail!.textContent = `総返済 ${yen(result.total)} / 利息 ${yen(result.interest)}`;
+    } else {
+      compactMonthly!.textContent = yen(result.monthly);
+      compactTotal!.textContent = yen(result.total);
+      compactInterest!.textContent = yen(result.interest);
+    }
+  }
+
+  function applyMode() {
+    const isFree = freeToggle!.checked;
+    selectFields!.classList.toggle("hidden", isFree);
+    freeFields!.classList.toggle("hidden", !isFree);
+    previewCompact!.classList.toggle("hidden", isFree);
+    previewLarge!.classList.toggle("hidden", !isFree);
+    submitArea!.classList.toggle("hidden", isFree);
+    updatePreview();
+  }
+
+  function syncSelectToFree() {
+    amountFreeInput!.value = amountSelect!.value;
+    yearsFreeInput!.value = yearsSelect!.value;
+    rateFreeInput!.value = rateSelect!.value;
+  }
+
+  form.addEventListener("input", updatePreview);
+  form.addEventListener("change", updatePreview);
+  amountSelect.addEventListener("change", syncSelectToFree);
+  yearsSelect.addEventListener("change", syncSelectToFree);
+  rateSelect.addEventListener("change", syncSelectToFree);
+  freeToggle.addEventListener("change", applyMode);
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    if (freeToggle!.checked) return;
+    const v = currentValues();
+    if (!isValid(v)) return;
+    const slug = `${v.amount}-${v.years}-${v.rate.toFixed(1)}`;
+    window.location.href = `/home/${slug}/`;
+  });
+
+  applyMode();
+</script>

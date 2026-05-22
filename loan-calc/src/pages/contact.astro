@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// TODO: Googleフォーム作成後、URL を実値に差し替える
+const contactFormUrl = "https://forms.gle/REPLACE_WITH_YOUR_GOOGLE_FORM_ID";
+---
+
+<BaseLayout
+  title="お問い合わせ | ローン計算ツール集"
+  description="ローン計算ツール集 編集部へのお問い合わせフォーム。計算結果の指摘・機能改善のご要望などはこちらからご連絡ください。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "お問い合わせ" },
+  ]}
+>
+  <article>
+    <h1 class="text-3xl font-bold tracking-tight">お問い合わせ</h1>
+
+    <p class="mt-4 text-slate-700">
+      ローン計算ツール集 編集部へのお問い合わせは、以下の Google フォームをご利用ください。
+    </p>
+
+    <div class="mt-6">
+      <a
+        href={contactFormUrl}
+        rel="noopener noreferrer"
+        target="_blank"
+        class="inline-block rounded-md bg-slate-900 px-5 py-3 text-base font-medium text-white transition hover:bg-slate-700"
+      >
+        お問い合わせフォームを開く →
+      </a>
+    </div>
+
+    <section class="mt-10 space-y-2">
+      <h2 class="text-xl font-bold">受付内容の例</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>計算結果の指摘・誤りの報告</li>
+        <li>機能改善のご要望</li>
+        <li>新機能のリクエスト</li>
+        <li>その他、サイト運営に関するご質問</li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">受付できない内容</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>個別の金融相談・ローン選びのご相談</li>
+        <li>特定金融機関の評価・口コミに関するお問い合わせ</li>
+        <li>取材・広告掲載のご依頼（現時点では対応しておりません）</li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">返信について</h2>
+      <p class="text-slate-700">
+        お問い合わせ内容によっては、返信までお時間をいただく場合がございます。また、内容によっては返信を行わない場合がございますので、あらかじめご了承ください。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">個別の金融相談について</h2>
+      <p class="text-slate-700">
+        本サイトはあくまで返済シミュレーションを行うためのツールです。個別の金融相談につきましては、ファイナンシャルプランナーや金融機関の窓口、または公的な相談窓口（金融サービス利用者相談室など）をご利用ください。
+      </p>
+    </section>
+  </article>
+</BaseLayout>

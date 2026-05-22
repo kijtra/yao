@@ -1,0 +1,233 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import {
+  calcEqualPayment,
+  calcAmortizationSchedule,
+  buildInsights,
+} from "../../lib/loan";
+import { homePatterns, HOME_YEARS, HOME_RATES } from "../../lib/loan/patterns";
+import { buildSlug } from "../../lib/loan/slug";
+import type { LoanInput } from "../../lib/loan/types";
+
+export function getStaticPaths() {
+  return homePatterns().map((p) => ({
+    params: { params: buildSlug(p) },
+    props: p,
+  }));
+}
+
+const { amount, years, rate } = Astro.props as LoanInput;
+const result = calcEqualPayment({ amount, years, rate });
+const schedule = calcAmortizationSchedule({ amount, years, rate });
+const insights = buildInsights({ amount, years, rate });
+
+const yearsIdx = HOME_YEARS.indexOf(years as (typeof HOME_YEARS)[number]);
+const rateIdx = HOME_RATES.indexOf(rate as (typeof HOME_RATES)[number]);
+
+const related: LoanInput[] = [];
+if (rateIdx > 0) related.push({ amount, years, rate: HOME_RATES[rateIdx - 1] });
+if (rateIdx < HOME_RATES.length - 1) related.push({ amount, years, rate: HOME_RATES[rateIdx + 1] });
+if (yearsIdx > 0) related.push({ amount, years: HOME_YEARS[yearsIdx - 1], rate });
+if (yearsIdx < HOME_YEARS.length - 1) related.push({ amount, years: HOME_YEARS[yearsIdx + 1], rate });
+
+const rateComparison = HOME_RATES.map((r) => ({
+  rate: r,
+  active: r === rate,
+  result: calcEqualPayment({ amount, years, rate: r }),
+}));
+
+const yearComparison = HOME_YEARS.map((y) => ({
+  years: y,
+  active: y === years,
+  result: calcEqualPayment({ amount, years: y, rate }),
+}));
+
+const yen = (n: number) => `${n.toLocaleString("ja-JP")}円`;
+const rateLabel = rate.toFixed(1);
+const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rateLabel}%`;
+---
+
+<BaseLayout
+  title={`${titleHead} の住宅ローンシミュレーション | ローン計算ツール集`}
+  description={`借入額${amount}万円、返済期間${years}年、年利${rateLabel}%で住宅ローンを組んだ場合の月々返済額・総返済額・利息総額・年次返済表のシミュレーション結果。`}
+  ogType="article"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "住宅ローン計算機", url: "/home/" },
+    { name: titleHead },
+  ]}
+>
+  <nav aria-label="パンくず" class="text-sm text-slate-600">
+    <a href="/" class="hover:underline">トップ</a>
+    <span class="mx-1">/</span>
+    <a href="/home/" class="hover:underline">住宅ローン計算機</a>
+    <span class="mx-1">/</span>
+    <span class="text-slate-400">{titleHead}</span>
+  </nav>
+
+  <h1 class="mt-3 text-3xl font-bold tracking-tight">
+    {titleHead} のシミュレーション
+  </h1>
+  <p class="mt-2 text-slate-600">
+    元利均等返済方式（毎月の返済額が一定）で計算した結果です。
+  </p>
+
+  <section class="mt-8 grid gap-4 sm:grid-cols-3">
+    <div class="rounded-xl border border-slate-200 bg-white p-5">
+      <div class="text-sm text-slate-500">月々の返済額</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">{yen(result.monthly)}</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5">
+      <div class="text-sm text-slate-500">総返済額</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">{yen(result.total)}</div>
+    </div>
+    <div class="rounded-xl border border-slate-200 bg-white p-5">
+      <div class="text-sm text-slate-500">利息総額</div>
+      <div class="mt-1 text-2xl font-bold text-slate-900">{yen(result.interest)}</div>
+    </div>
+  </section>
+
+  <section class="mt-10 rounded-xl border border-slate-200 bg-white p-6">
+    <h2 class="text-xl font-bold">この条件のポイント</h2>
+    <ul class="mt-3 space-y-2 text-slate-700">
+      {insights.map((line) => <li class="flex gap-2"><span class="text-slate-400">•</span><span>{line}</span></li>)}
+    </ul>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-xl font-bold">金利を変えた場合</h2>
+    <p class="mt-1 text-sm text-slate-600">借入額・期間を固定し、金利だけを動かしたときの月々返済額の違いです。</p>
+    <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-left text-slate-600">
+          <tr>
+            <th class="px-4 py-2 font-medium">金利</th>
+            <th class="px-4 py-2 font-medium">月々返済額</th>
+            <th class="px-4 py-2 font-medium">総返済額</th>
+            <th class="px-4 py-2 font-medium">利息総額</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            rateComparison.map((row) => (
+              <tr class={row.active ? "bg-slate-100 font-semibold" : "border-t border-slate-100"}>
+                <td class="px-4 py-2">
+                  {row.active ? (
+                    <span>{row.rate.toFixed(1)}% <span class="ml-1 rounded bg-slate-900 px-1.5 py-0.5 text-xs text-white">この条件</span></span>
+                  ) : (
+                    <a href={`/home/${buildSlug({ amount, years, rate: row.rate })}/`} class="text-slate-700 hover:underline">
+                      {row.rate.toFixed(1)}%
+                    </a>
+                  )}
+                </td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.monthly)}</td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.total)}</td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.interest)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-xl font-bold">返済期間を変えた場合</h2>
+    <p class="mt-1 text-sm text-slate-600">借入額・金利を固定し、期間だけを動かしたときの月々返済額の違いです。</p>
+    <div class="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-50 text-left text-slate-600">
+          <tr>
+            <th class="px-4 py-2 font-medium">期間</th>
+            <th class="px-4 py-2 font-medium">月々返済額</th>
+            <th class="px-4 py-2 font-medium">総返済額</th>
+            <th class="px-4 py-2 font-medium">利息総額</th>
+          </tr>
+        </thead>
+        <tbody>
+          {
+            yearComparison.map((row) => (
+              <tr class={row.active ? "bg-slate-100 font-semibold" : "border-t border-slate-100"}>
+                <td class="px-4 py-2">
+                  {row.active ? (
+                    <span>{row.years}年 <span class="ml-1 rounded bg-slate-900 px-1.5 py-0.5 text-xs text-white">この条件</span></span>
+                  ) : (
+                    <a href={`/home/${buildSlug({ amount, years: row.years, rate })}/`} class="text-slate-700 hover:underline">
+                      {row.years}年
+                    </a>
+                  )}
+                </td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.monthly)}</td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.total)}</td>
+                <td class="px-4 py-2 tabular-nums">{yen(row.result.interest)}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="mt-10">
+    <details class="group rounded-xl border border-slate-200 bg-white p-6">
+      <summary class="cursor-pointer text-xl font-bold group-open:mb-4">
+        年次返済表（{schedule.length}年分）
+      </summary>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 text-left text-slate-600">
+            <tr>
+              <th class="px-3 py-2 font-medium">経過</th>
+              <th class="px-3 py-2 font-medium">元金返済額</th>
+              <th class="px-3 py-2 font-medium">利息支払額</th>
+              <th class="px-3 py-2 font-medium">年末残債</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              schedule.map((row) => (
+                <tr class="border-t border-slate-100">
+                  <td class="px-3 py-2">{row.year}年目</td>
+                  <td class="px-3 py-2 tabular-nums">{yen(row.principal)}</td>
+                  <td class="px-3 py-2 tabular-nums">{yen(row.interest)}</td>
+                  <td class="px-3 py-2 tabular-nums">{yen(row.balance)}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+    </details>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="text-xl font-bold">近い条件で比較</h2>
+    <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+      {
+        related.map((r) => (
+          <li>
+            <a
+              href={`/home/${buildSlug(r)}/`}
+              class="block rounded-lg border border-slate-200 bg-white p-3 text-sm hover:border-slate-400 hover:shadow-sm"
+            >
+              {r.amount.toLocaleString()}万円 / {r.years}年 / 金利{r.rate.toFixed(1)}%
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-10">
+    <a
+      href="/home/"
+      class="inline-block rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-500"
+    >
+      別の条件で計算しなおす
+    </a>
+  </section>
+
+  <section class="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
+    <p>本シミュレーションは元利均等返済方式の概算です。ボーナス返済・繰上返済・各種手数料・団信保険料は含まれていません。実際の借入条件は金融機関の最終審査によります。</p>
+  </section>
+</BaseLayout>
