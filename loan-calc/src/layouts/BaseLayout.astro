@@ -18,7 +18,7 @@ const { title, description, ogType = "website", breadcrumb } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const siteName = "ローン計算ツール集";
 
-const gaId = import.meta.env.PUBLIC_GA_ID;
+const gaId = import.meta.env.PUBLIC_LOAN_CALC_GA_ID;
 const enableGa = import.meta.env.PROD && !!gaId;
 
 const breadcrumbJsonLd =

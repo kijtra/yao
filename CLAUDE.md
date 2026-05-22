@@ -86,3 +86,26 @@
 - 該当サイトを触る作業のときは、まず `<site>/PROJECT.md` を Read して仕様を把握する
 - `<site>/IDEAS.md` は **「実装予定」ではない** ことに注意。ここに書いてある内容を勝手に実装しない
 - 仕様が確定したら IDEAS.md から PROJECT.md へ移す
+
+## 共通環境変数
+
+全サイトで使う運営者名・問い合わせ先などは、親 `niche-sites/.env` に集約。各サイトの `astro.config.mjs` で `envDir: '../'` を指定して読みに行く。
+
+### 親 .env のキー設計
+
+- `PUBLIC_OWNER_NAME` … 全サイト共通の運営者名（例: ニッチサイト編集部）
+- `PUBLIC_CONTACT_FORM_URL` … 共通の Google フォーム URL（1フォームで全サイト分の問い合わせを受ける）
+- `PUBLIC_<SITE>_GA_ID` … サイト別 GA4 ID。prefix でサイトを識別（例: `PUBLIC_LOAN_CALC_GA_ID`）
+
+`PUBLIC_` プレフィックスはクライアント側に公開される値（Vite/Astro 慣習）。サーバ専用にしたい変数を後から増やす場合は `PUBLIC_` を付けずに書く。
+
+### サイト固有の `.env` は作らない
+
+`envDir: '../'` を指定するとサイト直下の `.env` は読まれない。混乱の元なので、サイト固有 `.env.example` は置かず、親 `.env.example` だけを参照する運用にする。
+
+### 新規サイトを追加するとき
+
+1. `niche-sites/.env.example` に新サイト用の `PUBLIC_<NEWSITE>_GA_ID=` を追記
+2. 新サイトの `astro.config.mjs` に `envDir: '../'` を設定
+3. 新サイトの BaseLayout で `import.meta.env.PUBLIC_<NEWSITE>_GA_ID` を参照
+4. `PUBLIC_OWNER_NAME` / `PUBLIC_CONTACT_FORM_URL` はそのまま共有

@@ -1,5 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const ownerName = import.meta.env.PUBLIC_OWNER_NAME || "サイト運営者";
 ---
 
 <BaseLayout
@@ -19,7 +21,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     <section class="mt-8 space-y-2">
       <h2 class="text-xl font-bold">運営者</h2>
-      <p class="text-slate-700">ローン計算ツール集 編集部（個人運営）</p>
+      <p class="text-slate-700">{ownerName}（個人運営）</p>
     </section>
 
     <section class="mt-8 space-y-2">

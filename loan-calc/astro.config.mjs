@@ -12,7 +12,9 @@ export default defineConfig({
   site: 'https://loan-calc.pages.dev',
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+    // 親 niche-sites/.env を読みに行く（PUBLIC_OWNER_NAME などを全サイトで共有）
+    envDir: '../',
   },
 
   integrations: [sitemap()]
