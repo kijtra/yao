@@ -11,11 +11,16 @@ interface Props {
   title: string;
   description?: string;
   ogType?: "website" | "article";
+  /** OG画像のパス（site相対）または絶対URL。未指定なら /og-image.png */
+  ogImage?: string;
   breadcrumb?: BreadcrumbItem[];
 }
 
-const { title, description, ogType = "website", breadcrumb } = Astro.props;
+const { title, description, ogType = "website", ogImage = "/og-image.png", breadcrumb } = Astro.props;
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = ogImage.startsWith("http")
+  ? ogImage
+  : new URL(ogImage, Astro.site).toString();
 const siteName = "ローン計算ツール集";
 
 const gaId = import.meta.env.PUBLIC_LOAN_CALC_GA_ID;
@@ -55,10 +60,15 @@ const breadcrumbJsonLd =
     {description && <meta property="og:description" content={description} />}
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="ja_JP" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
 
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
 
     {breadcrumbJsonLd && (
       <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
