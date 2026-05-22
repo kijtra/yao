@@ -236,34 +236,36 @@ function calcEqualPayment(
 ## 開発フェーズ
 
 ### Phase 1: プロトタイプ（〜1週間）
-- [x] Astroプロジェクトセットアップ（2026-05-22 完了）
-- [ ] 住宅ローンだけ実装（計算機 + 結果ページ）
-- [ ] 基本的なデザイン
-- [ ] ローカルで動作確認
+- [x] Astroプロジェクトセットアップ
+- [x] 住宅ローンだけ実装（計算機 + 結果ページ 240パターン）
+- [x] 基本的なデザイン（Tailwind v4 ベタ書き、独立サイト感を意識）
+- [x] ローカルで動作確認（`pnpm dev` / `pnpm build` 通過）
 
 ### Phase 2: 機能拡張（〜2週間）
-- マイカーローン、カードローン追加
-- グラフ表示実装
-- 関連リンク・内部リンク強化
-- レスポンシブデザイン
+- [ ] マイカーローン、カードローン追加（`car/`, `card/` 一式）
+- [ ] グラフ表示実装（Islands で JS 化、Chart.js or 軽量SVG）
+- [x] 関連リンク・内部リンク強化（近傍パターンへのリンク、金利/期間比較表）
+- [ ] レスポンシブデザイン（モバイル実機確認）
 
 ### Phase 3: コンテンツ充実（〜1ヶ月）
-- 解説記事10本作成
-- 必須固定ページ作成
-- SEOメタタグ最適化
-- サイトマップ生成
+- [ ] 解説記事10本作成（AdSense 審査のコンテンツ要件）
+- [x] 必須固定ページ作成（about / privacy / contact）
+- [x] SEOメタタグ最適化（canonical / OGP / Twitter Card / BreadcrumbList JSON-LD）
+- [x] サイトマップ生成（`@astrojs/sitemap` で 245 URL 自動生成）
 
 ### Phase 4: 公開・審査（〜1.5ヶ月）
-- Cloudflare Pagesにデプロイ
-- Search Console登録
-- AdSense審査申請
-- 審査通過後、広告枠実装
+- [ ] Cloudflare Pages にデプロイ（実ドメイン確定で `astro.config.mjs` の `site` と `robots.txt` の Sitemap URL を差し替え）
+- [ ] Google フォーム作成 + URL を `.env` の `PUBLIC_CONTACT_FORM_URL` に設定
+- [ ] GA4 プロパティ取得 + `PUBLIC_LOAN_CALC_GA_ID` を `.env` に設定
+- [ ] Search Console 登録 + sitemap 送信
+- [ ] AdSense 審査申請
+- [ ] 審査通過後、広告枠実装
 
 ### Phase 5: 運用・拡張
-- アクセス解析を見て需要ある組合せを追加
-- 教育ローン、リフォームローン等を追加
-- 独自ドメイン取得（アクセス次第）
-- 金融アフィリエイト導入検討
+- [ ] アクセス解析を見て需要ある組合せを追加
+- [ ] 教育ローン、リフォームローン等を追加
+- [ ] 独自ドメイン取得（アクセス次第）
+- [ ] 金融アフィリエイト導入検討
 
 ## 重要な制約・注意事項
 
@@ -283,17 +285,56 @@ function calcEqualPayment(
 - 「概算であり実際の借入額を保証するものではない」旨を明記
 - YMYL領域なので、誤情報は致命的
 
-## 現在の進捗と次のステップ
+## 現在の進捗と次のステップ（最終更新: 2026-05-22）
 
-**完了済**:
-- Astroプロジェクトの初期セットアップ（minimal template、TS strict、Tailwind v4）
-- ディレクトリ構造の骨組み（`src/components/`, `src/layouts/`, `src/lib/loan/`）
-- Hello World ページ起動確認・本番ビルド確認
+### 完了済（住宅ローン MVP + SEO 基盤 + 公開準備）
 
-**次にやること**:
-1. 計算ロジック（`src/lib/loan/equal-payment.ts`）の実装とテスト
-2. 住宅ローン計算機本体（`src/pages/home/index.astro`）の入力フォーム
-3. 結果ページテンプレート（`src/pages/home/[params].astro`）の実装
-4. 1パターン（例: `/home/3000-35-1.5/`）だけビルドして動作確認
+**計算ロジック**
+- `calcEqualPayment`: 元利均等返済（万円→円換算、金利0% 対応）
+- `calcAmortizationSchedule`: 年単位の元金/利息/残債推移、最終月の端数調整
+- `buildInsights`: 借入額/期間/金利の数値帯に応じた解説テキスト生成
+- `buildSlug` / `parseSlug`: URL slug の表記固定（`.toFixed(1)` で整数金利は `.0` 形式）
+- vitest で 18 ケース（既知値範囲・元利均等の性質・round-trip）
 
-「まず作って直していく」方針なので、最初から完璧を目指さず、住宅ローンの計算と1パターンの結果ページが動くMVPを目指す。
+**ページ**
+- `/`: トップ（ツール一覧）
+- `/home/`: 住宅ローン入力フォーム（select + リアルタイム控えめプレビュー + 自由入力モード切替 + 大型プレビュー、URL遷移なしの「電卓モード」）
+- `/home/[params]/`: 240パターンを `getStaticPaths` で事前生成。結果サマリー / 条件特有の解説 / 金利・期間比較表 / 年次返済表（折りたたみ）/ 近傍パターンへの関連リンク
+- `/about/`, `/privacy/`, `/contact/`: AdSense 審査3点セット
+- フッターから3固定ページに全頁から到達可能
+
+**SEO 基盤**
+- `@astrojs/sitemap` で sitemap-index.xml + sitemap-0.xml（245 URL）自動生成
+- BaseLayout に canonical / OGP / Twitter Card / BreadcrumbList JSON-LD（パンくず用構造化データ）
+- robots.txt に Sitemap 行
+- GA4 タグ（`PUBLIC_LOAN_CALC_GA_ID` 設定 + 本番ビルド時のみ出力、is:inline）
+
+**共通環境変数の運用**
+- 親 `niche-sites/.env` に集約、各サイトは `vite.envDir: '../'` で読む
+- 共通: `PUBLIC_OWNER_NAME`、`PUBLIC_CONTACT_FORM_URL`
+- サイト別: `PUBLIC_<SITE>_GA_ID`（prefix で識別）
+
+### 保留事項（実値未設定）
+
+- **`astro.config.mjs` の `site`** = `https://loan-calc.pages.dev`（仮値、実ドメイン確定で差し替え）
+- **`public/robots.txt` の Sitemap URL** = 同上、`site` と同期して差し替え
+- **`PUBLIC_OWNER_NAME`** = `.env` で「ニッチサイト編集部」を設定する想定
+- **`PUBLIC_CONTACT_FORM_URL`** = Google フォーム未作成、URL 未取得
+- **`PUBLIC_LOAN_CALC_GA_ID`** = GA4 プロパティ未取得
+
+### 次にやることの候補（順不同）
+
+1. **Cloudflare Pages デプロイ** = サイトを実環境で公開、Search Console / GA4 と連携できる状態に
+2. **Google フォーム作成 + GA4 プロパティ取得** = `.env` に実値投入、解析・問い合わせ開始
+3. **解説記事10本（`articles/`）** = AdSense 審査のコンテンツ要件、最も時間がかかる
+4. **マイカーローン展開** = `car/` 一式（home の構造を流用、84パターン）
+5. **カードローン展開** = `card/` 一式（120パターン、リボ計算ロジック追加）
+6. **og:image 動的生成** = SNS シェア時の見た目向上
+7. **モバイル実機確認** = レスポンシブの最終チェック
+
+### 開発方針メモ
+
+- **「まず作って直していく」** = 完璧を目指さない、住宅ローン1ジャンルで Google からの流入を観察してから他ジャンルに展開
+- **自由入力モードは「簡易計算機」扱い** = SEO目線では本命ではないので、フォームの右寄せ・小さい表示で視覚的に控えめにしてある（詳細は IDEAS.md）
+- **共通パッケージは作らない** = サイト数が増えて共通化したくなったら pnpm workspaces で対応
+- **新概念の初出は CLAUDE.md の方針通り AskUserQuestion で確認** = TypeScript / Astro / pnpm / monorepo は学習過程
