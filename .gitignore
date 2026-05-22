@@ -1,0 +1,25 @@
+# Dependencies
+**/node_modules/
+
+# Build artifacts
+**/dist/
+**/.astro/
+
+# Logs
+**/npm-debug.log*
+**/pnpm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Environment
+**/.env
+**/.env.local
+**/.env.*.local
+
+# OS
+.DS_Store
+**/.DS_Store
+
+# IDE
+.vscode/
+.idea/
