@@ -67,6 +67,7 @@ CF DNS 管理下なので自動で済む:
 - `https://loan-calc.yao.tools/` でトップ表示
 - `https://loan-calc.yao.tools/sitemap-index.xml` で sitemap が返る
 - `https://loan-calc.yao.tools/robots.txt` の Sitemap 行が本番URLを指している
+- `https://loan-calc.yao.tools/ads.txt` で `google.com, pub-XXXXXXXXX, DIRECT, f08c47fec0942fa0` が返る（`PUBLIC_ADSENSE_CLIENT_ID` が設定されている場合）
 - 任意の `home/<params>/` ページの canonical / OGP / BreadcrumbList JSON-LD が本番URLになっている
 
 ## 4. Search Console 登録
@@ -100,7 +101,7 @@ CF DNS 管理下なので自動で済む:
 |---|---|
 | URL | `https://loan-calc.yao.tools/sitemap-index.xml`（フルURL） |
 
-送信後 24 時間程度で sitemap が読み込まれ、登録 URL 数（loan-calc なら 245）が反映される。
+送信後 24 時間程度で sitemap が読み込まれ、登録 URL 数（loan-calc なら 495）が反映される。
 
 ## 新サイト追加時の手順
 

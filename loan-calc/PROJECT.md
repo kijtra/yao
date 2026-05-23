@@ -289,24 +289,26 @@ function calcEqualPayment(
 - [x] ローカルで動作確認（`pnpm dev` / `pnpm build` 通過）
 
 ### Phase 2: 機能拡張（〜2週間）
-- [ ] マイカーローン、カードローン追加（`car/`, `card/` 一式）
+- [x] マイカーローン・カードローン追加（`car/` 112パターン、`card/` 120パターン）
 - [ ] グラフ表示実装（Islands で JS 化、Chart.js or 軽量SVG）
-- [x] 関連リンク・内部リンク強化（近傍パターンへのリンク、金利/期間比較表）
-- [ ] レスポンシブデザイン（モバイル実機確認）
+- [x] 関連リンク・内部リンク強化（近傍パターンへのリンク、金利/期間比較表、記事↔計算機の双方向リンク）
+- [x] レスポンシブデザイン（モバイル実機確認済）
 
 ### Phase 3: コンテンツ充実（〜1ヶ月）
-- [ ] 解説記事10本作成（AdSense 審査のコンテンツ要件）
+- [x] 解説記事15本作成（住宅7・マイカー3・カードローン5。AdSense 審査のコンテンツ要件を満たす）
 - [x] 必須固定ページ作成（about / privacy / contact）
 - [x] SEOメタタグ最適化（canonical / OGP / Twitter Card / BreadcrumbList JSON-LD）
-- [x] サイトマップ生成（`@astrojs/sitemap` で 245 URL 自動生成）
+- [x] サイトマップ生成（`@astrojs/sitemap` で 495 URL 自動生成）
+- [x] og:image 動的生成（satori + sharp、build-time PNG 482枚: home240 + car112 + card120 + articles10）
+- [x] ads.txt エンドポイント実装（`PUBLIC_ADSENSE_CLIENT_ID` から生成）
 
 ### Phase 4: 公開・審査（〜1.5ヶ月）
-- [ ] Cloudflare Pages にデプロイ（実ドメイン確定で `astro.config.mjs` の `site` と `robots.txt` の Sitemap URL を差し替え）
-- [ ] Google フォーム作成 + URL を `.env` の `PUBLIC_CONTACT_FORM_URL` に設定
-- [ ] GA4 プロパティ取得 + `PUBLIC_LOAN_CALC_GA_ID` を `.env` に設定
-- [ ] Search Console 登録 + sitemap 送信
-- [ ] AdSense 審査申請
-- [ ] 審査通過後、広告枠実装
+- [x] Cloudflare Workers Static Assets にデプロイ（`loan-calc.yao.tools` 本番稼働中）
+- [x] Google フォーム作成 + `PUBLIC_CONTACT_FORM_URL` を Workers 環境変数に設定
+- [x] GA4 プロパティ取得 + `PUBLIC_LOAN_CALC_GA_ID`（`G-G8ECYM8W47`）を Workers 環境変数に設定
+- [x] Search Console 登録（`yao.tools` ドメインプロパティで認証済）+ sitemap 送信済
+- [x] AdSense 審査申請済（審査中）
+- [ ] 審査通過後、広告枠実装 + `PUBLIC_ADSENSE_CLIENT_ID` 反映確認
 
 ### Phase 5: 運用・拡張
 - [ ] アクセス解析を見て需要ある組合せを追加
@@ -334,54 +336,48 @@ function calcEqualPayment(
 
 ## 現在の進捗と次のステップ（最終更新: 2026-05-23）
 
-### 完了済（住宅ローン MVP + SEO 基盤 + 公開）
+### 完了済
 
 **計算ロジック**
 - `calcEqualPayment`: 元利均等返済（万円→円換算、金利0% 対応）
 - `calcAmortizationSchedule`: 年単位の元金/利息/残債推移、最終月の端数調整
-- `buildInsights`: 借入額/期間/金利の数値帯に応じた解説テキスト生成
+- `buildHomeInsights` / `buildCarInsights` / `buildCardInsights`: ジャンル別の解説テキスト生成
 - `buildSlug` / `parseSlug`: URL slug の表記固定（`.toFixed(1)` で整数金利は `.0` 形式）
-- vitest で 18 ケース（既知値範囲・元利均等の性質・round-trip）
+- vitest で 18 ケース
 
-**ページ**
-- `/`: トップ（ツール一覧）
-- `/home/`: 住宅ローン入力フォーム（select + リアルタイム控えめプレビュー + 自由入力モード切替 + 大型プレビュー、URL遷移なしの「電卓モード」）
-- `/home/[params]/`: 240パターンを `getStaticPaths` で事前生成。結果サマリー / 条件特有の解説 / 金利・期間比較表 / 年次返済表（折りたたみ）/ 近傍パターンへの関連リンク
-- `/about/`, `/privacy/`, `/contact/`: AdSense 審査3点セット
-- フッターから3固定ページに全頁から到達可能
+**計算機ページ**
+- `/home/`・`/car/`・`/card/`: 各計算機フォーム（select + 自由入力モード、リアルタイムプレビュー）
+- `/home/[params]/`: 240パターン。結果サマリー / 条件特有の解説 / 金利・期間比較表 / 年次返済表 / 関連リンク / 解説記事リンク
+- `/car/[params]/`: 112パターン（同構成）
+- `/card/[params]/`: 120パターン（同構成）
+- `/articles/`: 解説記事一覧。各記事から対応計算機ページへリンク
 
-**SEO 基盤**
-- `@astrojs/sitemap` で sitemap-index.xml + sitemap-0.xml（245 URL）自動生成
-- BaseLayout に canonical / OGP / Twitter Card / BreadcrumbList JSON-LD（パンくず用構造化データ）
-- robots.txt に Sitemap 行
-- GA4 タグ（`PUBLIC_LOAN_CALC_GA_ID` 設定 + 本番ビルド時のみ出力、is:inline）
+**解説記事（15本）**
+- 住宅ローン7本: 変動/固定金利、35vs30年、元利均等/元金均等、繰上返済、金利差、年収ベース借入、頭金
+- マイカーローン3本: 銀行vsディーラー、残価設定型、中古車
+- カードローン5本: 銀行vs消費者金融、リボ払いとの違い、繰上返済効果、総量規制/利息制限法、おまとめローン
 
-**共通環境変数の運用**
-- 親 `niche-sites/.env` に集約、各サイトは `vite.envDir: '../'` で読む
-- 共通: `PUBLIC_OWNER_NAME`、`PUBLIC_CONTACT_FORM_URL`
-- サイト別: `PUBLIC_<SITE>_GA_ID`（prefix で識別）
+**SEO・インフラ**
+- sitemap-index.xml（495 URL）、robots.txt、canonical / OGP / Twitter Card / BreadcrumbList JSON-LD
+- og:image ビルド時生成（satori + sharp）: home240 + car112 + card120 + articles15 = 487PNG
+- ads.txt エンドポイント（AdSense 審査中。承認後に `PUBLIC_ADSENSE_CLIENT_ID` を設定すると有効化）
+- GA4（`G-G8ECYM8W47`）、Google フォーム、Search Console 全て設定済
+- 計算機ページ → 記事、記事 → 計算機の双方向内部リンク
 
-### 本番公開・解析基盤（2026-05-23 完了）
+**本番環境**
+- `https://loan-calc.yao.tools`（Cloudflare Workers Static Assets）
+- GitHub push → Workers Builds で自動ビルド・デプロイ
+- 親 `.env` / Workers 環境変数で `PUBLIC_OWNER_NAME`・`PUBLIC_CONTACT_FORM_URL`・`PUBLIC_LOAN_CALC_GA_ID` 設定済
 
-- **本番ドメイン** = `https://loan-calc.yao.tools` で稼働中（Cloudflare Workers Static Assets、GitHub 連携の Workers Builds で自動デプロイ）
-- **`PUBLIC_OWNER_NAME`** = 「やおツールズ」を Workers の Build 環境変数に設定
-- **`PUBLIC_CONTACT_FORM_URL`** = Google フォーム（`https://forms.gle/jVnHgBpDc7Q5giaEA`）に紐付け、contact ページから到達可能
-- **`PUBLIC_LOAN_CALC_GA_ID`** = GA4 プロパティ `G-G8ECYM8W47` を本番ビルドで注入
-- **Search Console** = `yao.tools` ルートのドメインプロパティで認証済、sitemap-index.xml 送信済
-- **デプロイ手順は親 `niche-sites/DEPLOY.md` に外出し**（Workers Builds の設定値、カスタムドメイン、Search Console 登録、新サイト追加時の手順まで）
+### 次にやること
 
-### 次にやることの候補（優先度順）
-
-1. **マイカーローン展開（`car/` 一式）** ← 着手中。仕様は本ファイル「生成パターンの想定 > マイカーローン」（112パターン、URL `/car/[params]/`）
-2. **解説記事10本（`articles/`）** = AdSense 審査のコンテンツ要件、最も時間がかかる本丸
-3. **カードローン展開（`card/` 一式）** = 120パターン、リボ計算ロジック追加
-4. **og:image 動的生成** = パターン別の数値入り画像、SNS シェア時のクリック率向上
-5. **モバイル実機確認** = レスポンシブ最終チェック
-6. **2サイト目（salary-calc など）の立ち上げ** = サブドメイン運用の動作実証
+1. **AdSense 審査通過後**: 広告枠実装（`PUBLIC_ADSENSE_CLIENT_ID` を Workers 環境変数に設定 → 全ページへの AdSense スクリプト自動注入が有効化）
+2. **グラフ表示実装**: 元金/利息推移の可視化（Island で JS 化）
+3. **2サイト目**: `salary-calc.yao.tools` などの立ち上げ（`DEPLOY.md` の手順に沿って追加）
+4. **教育ローン・リフォームローン**: アクセス解析を見てから判断
 
 ### 開発方針メモ
 
-- **「まず作って直していく」** = 完璧を目指さない、住宅ローン1ジャンルで Google からの流入を観察してから他ジャンルに展開
-- **自由入力モードは「簡易計算機」扱い** = SEO目線では本命ではないので、フォームの右寄せ・小さい表示で視覚的に控えめにしてある（詳細は IDEAS.md）
-- **共通パッケージは作らない** = サイト数が増えて共通化したくなったら pnpm workspaces で対応
-- **新概念の初出は CLAUDE.md の方針通り AskUserQuestion で確認** = TypeScript / Astro / pnpm / monorepo は学習過程
+- **「まず作って直していく」** = 住宅ローンで Google 流入を観察してから他ジャンルに展開
+- **自由入力モードは「簡易計算機」扱い** = SEO目線では本命ではないので視覚的に控えめ（詳細は IDEAS.md）
+- **共通パッケージは作らない** = 必要になったら pnpm workspaces で後追い対応

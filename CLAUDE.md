@@ -81,21 +81,26 @@
 
 ## 現在のサイト
 
-- `portal/` … やおツールズのハブサイト（`yao.tools`、Workers `yao-portal`）。ブランド紹介と AdSense 申請用の3固定ページ
-- `loan-calc/` … ローン計算ツール（`loan-calc.yao.tools`、Workers `yao-loan-calc`）。住宅ローン240パターン + マイカーローン112パターン + 解説記事10本
+- `portal/` … やおツールズのハブサイト（`yao.tools`、Workers `yao-portal`）。ブランド紹介と AdSense 申請用の固定ページ（index / about / privacy / contact）。AdSense 審査中
+- `loan-calc/` … ローン計算ツール（`loan-calc.yao.tools`、Workers `yao-loan-calc`）。住宅ローン240 + マイカーローン112 + カードローン120 = 計472パターン。解説記事15本（住宅7・マイカー3・カードローン5）。og:image 482PNG・ads.txt・内部リンク実装済
 
 いずれも Astro 6 + TypeScript strict + Tailwind v4 + pnpm 11 + Cloudflare Workers Static Assets で構成。Workers プロジェクト名は **`yao-<site-key>`** で全サイト統一。
 
-## サイトごとのドキュメント
+## ドキュメント構成
 
-各サイト配下に2種類のMarkdownを置く方針:
-
-- `<site>/PROJECT.md` … **仕様書**。URL設計・データモデル・開発フェーズなど確定情報
-- `<site>/IDEAS.md` … **ブレインストーミングメモ**。未確定の拡張アイデア、検討中の機能、捨てた案の記録
+```
+niche-sites/
+├── CLAUDE.md       … このファイル。Claude 向けプロジェクト方針
+├── DEPLOY.md       … デプロイ手順（全サイト共通）
+├── IDEAS.md        … プロジェクト全体のアイデアメモ（複数サイト横断・横展開候補など）
+└── <site>/
+    ├── PROJECT.md  … そのサイトの仕様書（確定情報）
+    └── IDEAS.md    … そのサイト固有のアイデアメモ（UI拡張・機能改善案など）
+```
 
 **Claude の動き方**:
 - 該当サイトを触る作業のときは、まず `<site>/PROJECT.md` を Read して仕様を把握する
-- `<site>/IDEAS.md` は **「実装予定」ではない** ことに注意。ここに書いてある内容を勝手に実装しない
+- IDEAS.md（ルート・サイト問わず）は **「実装予定」ではない**。ここに書いてある内容を勝手に実装しない
 - 仕様が確定したら IDEAS.md から PROJECT.md へ移す
 
 ## 共通環境変数
