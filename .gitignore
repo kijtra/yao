@@ -5,6 +5,9 @@
 **/dist/
 **/.astro/
 
+# Fonts fetched at build time（フル CJK フォントは GitHub から取得する想定）
+**/src/assets/fonts/*.otf
+
 # Logs
 **/npm-debug.log*
 **/pnpm-debug.log*

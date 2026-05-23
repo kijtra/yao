@@ -8,8 +8,8 @@
     "pnpm": ">=11.0.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "node scripts/fetch-font.mjs && astro dev",
+    "build": "node scripts/fetch-font.mjs && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
@@ -19,6 +19,7 @@
     "@astrojs/sitemap": "^3.7.2",
     "@tailwindcss/vite": "^4.3.0",
     "astro": "^6.3.7",
+    "satori": "^0.26.0",
     "tailwindcss": "^4.3.0"
   },
   "devDependencies": {

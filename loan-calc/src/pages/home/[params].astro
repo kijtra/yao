@@ -51,6 +51,7 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
   title={`${titleHead} の住宅ローンシミュレーション | ローン計算ツール集`}
   description={`借入額${amount}万円、返済期間${years}年、年利${rateLabel}%で住宅ローンを組んだ場合の月々返済額・総返済額・利息総額・年次返済表のシミュレーション結果。`}
   ogType="article"
+  ogImage={`/og/home/${buildSlug({ amount, years, rate })}.png`}
   breadcrumb={[
     { name: "トップ", url: "/" },
     { name: "住宅ローン計算機", url: "/home/" },
