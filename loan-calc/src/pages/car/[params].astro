@@ -3,14 +3,14 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import {
   calcEqualPayment,
   calcAmortizationSchedule,
-  buildHomeInsights,
+  buildCarInsights,
 } from "../../lib/loan";
-import { homePatterns, HOME_YEARS, HOME_RATES } from "../../lib/loan/patterns";
+import { carPatterns, CAR_YEARS, CAR_RATES } from "../../lib/loan/patterns";
 import { buildSlug } from "../../lib/loan/slug";
 import type { LoanInput } from "../../lib/loan/types";
 
 export function getStaticPaths() {
-  return homePatterns().map((p) => ({
+  return carPatterns().map((p) => ({
     params: { params: buildSlug(p) },
     props: p,
   }));
@@ -19,24 +19,24 @@ export function getStaticPaths() {
 const { amount, years, rate } = Astro.props as LoanInput;
 const result = calcEqualPayment({ amount, years, rate });
 const schedule = calcAmortizationSchedule({ amount, years, rate });
-const insights = buildHomeInsights({ amount, years, rate });
+const insights = buildCarInsights({ amount, years, rate });
 
-const yearsIdx = HOME_YEARS.indexOf(years as (typeof HOME_YEARS)[number]);
-const rateIdx = HOME_RATES.indexOf(rate as (typeof HOME_RATES)[number]);
+const yearsIdx = CAR_YEARS.indexOf(years as (typeof CAR_YEARS)[number]);
+const rateIdx = CAR_RATES.indexOf(rate as (typeof CAR_RATES)[number]);
 
 const related: LoanInput[] = [];
-if (rateIdx > 0) related.push({ amount, years, rate: HOME_RATES[rateIdx - 1] });
-if (rateIdx < HOME_RATES.length - 1) related.push({ amount, years, rate: HOME_RATES[rateIdx + 1] });
-if (yearsIdx > 0) related.push({ amount, years: HOME_YEARS[yearsIdx - 1], rate });
-if (yearsIdx < HOME_YEARS.length - 1) related.push({ amount, years: HOME_YEARS[yearsIdx + 1], rate });
+if (rateIdx > 0) related.push({ amount, years, rate: CAR_RATES[rateIdx - 1] });
+if (rateIdx < CAR_RATES.length - 1) related.push({ amount, years, rate: CAR_RATES[rateIdx + 1] });
+if (yearsIdx > 0) related.push({ amount, years: CAR_YEARS[yearsIdx - 1], rate });
+if (yearsIdx < CAR_YEARS.length - 1) related.push({ amount, years: CAR_YEARS[yearsIdx + 1], rate });
 
-const rateComparison = HOME_RATES.map((r) => ({
+const rateComparison = CAR_RATES.map((r) => ({
   rate: r,
   active: r === rate,
   result: calcEqualPayment({ amount, years, rate: r }),
 }));
 
-const yearComparison = HOME_YEARS.map((y) => ({
+const yearComparison = CAR_YEARS.map((y) => ({
   years: y,
   active: y === years,
   result: calcEqualPayment({ amount, years: y, rate }),
@@ -48,19 +48,19 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
 ---
 
 <BaseLayout
-  title={`${titleHead} の住宅ローンシミュレーション | ローン計算ツール集`}
-  description={`借入額${amount}万円、返済期間${years}年、年利${rateLabel}%で住宅ローンを組んだ場合の月々返済額・総返済額・利息総額・年次返済表のシミュレーション結果。`}
+  title={`${titleHead} のマイカーローンシミュレーション | ローン計算ツール集`}
+  description={`借入額${amount}万円、返済期間${years}年、年利${rateLabel}%でマイカーローンを組んだ場合の月々返済額・総返済額・利息総額・年次返済表のシミュレーション結果。`}
   ogType="article"
   breadcrumb={[
     { name: "トップ", url: "/" },
-    { name: "住宅ローン計算機", url: "/home/" },
+    { name: "マイカーローン計算機", url: "/car/" },
     { name: titleHead },
   ]}
 >
   <nav aria-label="パンくず" class="text-sm text-slate-600">
     <a href="/" class="hover:underline">トップ</a>
     <span class="mx-1">/</span>
-    <a href="/home/" class="hover:underline">住宅ローン計算機</a>
+    <a href="/car/" class="hover:underline">マイカーローン計算機</a>
     <span class="mx-1">/</span>
     <span class="text-slate-400">{titleHead}</span>
   </nav>
@@ -115,7 +115,7 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
                   {row.active ? (
                     <span>{row.rate.toFixed(1)}% <span class="ml-1 rounded bg-slate-900 px-1.5 py-0.5 text-xs text-white">この条件</span></span>
                   ) : (
-                    <a href={`/home/${buildSlug({ amount, years, rate: row.rate })}/`} class="text-slate-700 hover:underline">
+                    <a href={`/car/${buildSlug({ amount, years, rate: row.rate })}/`} class="text-slate-700 hover:underline">
                       {row.rate.toFixed(1)}%
                     </a>
                   )}
@@ -152,7 +152,7 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
                   {row.active ? (
                     <span>{row.years}年 <span class="ml-1 rounded bg-slate-900 px-1.5 py-0.5 text-xs text-white">この条件</span></span>
                   ) : (
-                    <a href={`/home/${buildSlug({ amount, years: row.years, rate })}/`} class="text-slate-700 hover:underline">
+                    <a href={`/car/${buildSlug({ amount, years: row.years, rate })}/`} class="text-slate-700 hover:underline">
                       {row.years}年
                     </a>
                   )}
@@ -207,7 +207,7 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
         related.map((r) => (
           <li>
             <a
-              href={`/home/${buildSlug(r)}/`}
+              href={`/car/${buildSlug(r)}/`}
               class="block rounded-lg border border-slate-200 bg-white p-3 text-sm hover:border-slate-400 hover:shadow-sm"
             >
               {r.amount.toLocaleString()}万円 / {r.years}年 / 金利{r.rate.toFixed(1)}%
@@ -220,7 +220,7 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
 
   <section class="mt-10">
     <a
-      href="/home/"
+      href="/car/"
       class="inline-block rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-500"
     >
       別の条件で計算しなおす
@@ -228,6 +228,6 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
   </section>
 
   <section class="mt-10 border-t border-slate-200 pt-6 text-sm text-slate-500">
-    <p>本シミュレーションは元利均等返済方式の概算です。ボーナス返済・繰上返済・各種手数料・団信保険料は含まれていません。実際の借入条件は金融機関の最終審査によります。</p>
+    <p>本シミュレーションは元利均等返済方式の概算です。ボーナス併用払い・残価設定型・繰上返済・各種手数料は含まれていません。実際の借入条件は金融機関やディーラーの最終審査によります。</p>
   </section>
 </BaseLayout>
