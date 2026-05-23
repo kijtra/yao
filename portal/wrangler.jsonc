@@ -3,7 +3,8 @@
   "$schema": "node_modules/wrangler/config-schema.json",
 
   // Workers プロジェクトの識別名。CF ダッシュボードでの表示名。
-  "name": "portal",
+  // yao- プレフィックスで全サイト統一（ブランド統一・他プロジェクトとの識別性）。
+  "name": "yao-portal",
 
   // Workers ランタイムの API 挙動をどの時点で固定するかの日付。
   "compatibility_date": "2026-05-23",

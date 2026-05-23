@@ -81,10 +81,10 @@
 
 ## 現在のサイト
 
-- `portal/` … やおツールズのハブサイト（`yao.tools`）。ブランド紹介と AdSense 申請用の3固定ページ
-- `loan-calc/` … ローン計算ツール（`loan-calc.yao.tools`）。住宅ローン240パターン + マイカーローン112パターン + 解説記事10本
+- `portal/` … やおツールズのハブサイト（`yao.tools`、Workers `yao-portal`）。ブランド紹介と AdSense 申請用の3固定ページ
+- `loan-calc/` … ローン計算ツール（`loan-calc.yao.tools`、Workers `yao-loan-calc`）。住宅ローン240パターン + マイカーローン112パターン + 解説記事10本
 
-いずれも Astro 6 + TypeScript strict + Tailwind v4 + pnpm 11 + Cloudflare Workers Static Assets で構成。
+いずれも Astro 6 + TypeScript strict + Tailwind v4 + pnpm 11 + Cloudflare Workers Static Assets で構成。Workers プロジェクト名は **`yao-<site-key>`** で全サイト統一。
 
 ## サイトごとのドキュメント
 

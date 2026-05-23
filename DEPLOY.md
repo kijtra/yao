@@ -6,9 +6,11 @@ Workers Builds の GitHub 連携で push → 自動ビルド → 自動デプロ
 
 | サイト | リポジトリ内パス | Workers プロジェクト名 | 公開URL | 役割 |
 |---|---|---|---|---|
-| portal | `/portal` | `portal` | `https://yao.tools` | ハブ。AdSense ルート要件 + ブランド面 |
-| loan-calc | `/loan-calc` | `loan-calc` | `https://loan-calc.yao.tools` | ローン計算ツール |
-| （将来）salary-calc | `/salary-calc` | `salary-calc` | `https://salary-calc.yao.tools` | 給与計算（予定） |
+| portal | `/portal` | `yao-portal` | `https://yao.tools` | ハブ。AdSense ルート要件 + ブランド面 |
+| loan-calc | `/loan-calc` | `yao-loan-calc` | `https://loan-calc.yao.tools` | ローン計算ツール |
+| （将来）salary-calc | `/salary-calc` | `yao-salary-calc` | `https://salary-calc.yao.tools` | 給与計算（予定） |
+
+**命名規則**: Workers プロジェクト名は **`yao-<site-key>`** で統一。CF アカウント内の識別性とブランド統一のため、新サイト追加時もこのルールに従う。
 
 ## なぜ Pages ではなく Workers？
 

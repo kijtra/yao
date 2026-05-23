@@ -3,9 +3,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
 
   // Workers プロジェクトの識別名（Cloudflare アカウント内でユニーク）。
-  // CF ダッシュボードに表示される名前で、デフォルトの公開URLは
-  // https://loan-calc.<account>.workers.dev になる。
-  "name": "loan-calc",
+  // yao- プレフィックスで全サイト統一（ブランド統一・他プロジェクトとの識別性）。
+  // デフォルトの公開URLは https://yao-loan-calc.<account>.workers.dev になる。
+  "name": "yao-loan-calc",
 
   // Workers ランタイムの API 挙動をどの時点で固定するかの日付。
   // 古い API のまま固まるのを防ぐため、定期的に更新する想定。
