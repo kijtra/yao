@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "sharp": "^0.34.5",
-    "vitest": "^4.1.7"
+    "vitest": "^4.1.7",
+    "wrangler": "^4.93.1"
   }
 }

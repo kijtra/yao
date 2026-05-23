@@ -1,0 +1,20 @@
+{
+  // VSCode で補完を効かせるための JSON Schema 指定。
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Workers プロジェクトの識別名（Cloudflare アカウント内でユニーク）。
+  // CF ダッシュボードに表示される名前で、デフォルトの公開URLは
+  // https://loan-calc.<account>.workers.dev になる。
+  "name": "loan-calc",
+
+  // Workers ランタイムの API 挙動をどの時点で固定するかの日付。
+  // 古い API のまま固まるのを防ぐため、定期的に更新する想定。
+  "compatibility_date": "2026-05-23",
+
+  // Static Assets 配信設定。Astro のビルド出力をそのままアップロードする。
+  // ディレクトリ内に Worker スクリプト（main）を別途置かない限り、
+  // 純粋な静的サイトとして配信される。
+  "assets": {
+    "directory": "./dist"
+  }
+}
