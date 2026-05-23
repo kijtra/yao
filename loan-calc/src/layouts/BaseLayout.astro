@@ -22,6 +22,8 @@ const ogImageUrl = ogImage.startsWith("http")
   ? ogImage
   : new URL(ogImage, Astro.site).toString();
 const siteName = "ローン計算ツール集";
+const ownerName = import.meta.env.PUBLIC_OWNER_NAME || "やおツールズ";
+const currentYear = new Date().getFullYear();
 
 const gaId = import.meta.env.PUBLIC_LOAN_CALC_GA_ID;
 const enableGa = import.meta.env.PROD && !!gaId;
@@ -106,6 +108,9 @@ const breadcrumbJsonLd =
         </nav>
         <p class="mt-3 text-xs text-slate-500">
           ※本サイトの計算結果は概算です。実際の借入条件は金融機関の最終審査によります。
+        </p>
+        <p class="mt-3 text-xs text-slate-500">
+          &copy; {currentYear} {ownerName}
         </p>
       </div>
     </footer>

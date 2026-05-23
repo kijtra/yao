@@ -316,9 +316,10 @@ function calcEqualPayment(
 
 ### 保留事項（実値未設定）
 
-- **`astro.config.mjs` の `site`** = `https://loan-calc.pages.dev`（仮値、実ドメイン確定で差し替え）
-- **`public/robots.txt` の Sitemap URL** = 同上、`site` と同期して差し替え
-- **`PUBLIC_OWNER_NAME`** = `.env` で「ニッチサイト編集部」を設定する想定
+- **本番ドメイン** = `https://loan-calc.yao.tools`（取得済 / Cloudflare Pages のカスタムドメイン設定は未実施）
+  - `astro.config.mjs` の `site` および `public/robots.txt` の Sitemap URL は本番URLに設定済
+  - Cloudflare Pages 側で `loan-calc.yao.tools` を当該プロジェクトに紐付ける作業が残っている
+- **`PUBLIC_OWNER_NAME`** = `.env` で「やおツールズ」を設定する想定（運営者名 = ブランド名）
 - **`PUBLIC_CONTACT_FORM_URL`** = Google フォーム未作成、URL 未取得
 - **`PUBLIC_LOAN_CALC_GA_ID`** = GA4 プロパティ未取得
 

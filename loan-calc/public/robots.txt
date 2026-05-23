@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://loan-calc.pages.dev/sitemap-index.xml
+Sitemap: https://loan-calc.yao.tools/sitemap-index.xml
