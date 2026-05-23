@@ -68,9 +68,9 @@
 
 - ブランド名: **やおツールズ**（yao tools）
 - ルートドメイン: **`yao.tools`**（取得済）
-- 運用形態: **サブドメイン運用**（各サイトを `<site>.yao.tools` で配信し、SEO的には独立特化サイトとして扱う）
+- 運用形態: **サブドメイン運用**（各ツールサイトを `<site>.yao.tools` で配信し、SEO的には独立特化サイトとして扱う）
 - 例: `loan-calc.yao.tools`、（将来）`salary-calc.yao.tools` など
-- ルート `yao.tools` は将来的にサイト群のインデックス/ハブとして使う可能性あり（未確定）
+- ルート `yao.tools` は **`portal` サイトとしてハブ運用**（AdSense はルートドメイン申請を要求するため、ブランド紹介＋ツール一覧＋3固定ページの構成で実装済）
 
 ## 構成方針（決定済）
 
@@ -81,7 +81,10 @@
 
 ## 現在のサイト
 
-- `loan-calc/` … ローン計算ツール（Astro 6 + TypeScript strict + Tailwind v4 + pnpm 11）
+- `portal/` … やおツールズのハブサイト（`yao.tools`）。ブランド紹介と AdSense 申請用の3固定ページ
+- `loan-calc/` … ローン計算ツール（`loan-calc.yao.tools`）。住宅ローン240パターン + マイカーローン112パターン + 解説記事10本
+
+いずれも Astro 6 + TypeScript strict + Tailwind v4 + pnpm 11 + Cloudflare Workers Static Assets で構成。
 
 ## サイトごとのドキュメント
 
@@ -103,7 +106,7 @@
 
 - `PUBLIC_OWNER_NAME` … 全サイト共通の運営者名（= ブランド名）。実値は「やおツールズ」
 - `PUBLIC_CONTACT_FORM_URL` … 共通の Google フォーム URL（1フォームで全サイト分の問い合わせを受ける）
-- `PUBLIC_<SITE>_GA_ID` … サイト別 GA4 ID。prefix でサイトを識別（例: `PUBLIC_LOAN_CALC_GA_ID`）
+- `PUBLIC_<SITE>_GA_ID` … サイト別 GA4 ID。prefix でサイトを識別（例: `PUBLIC_LOAN_CALC_GA_ID`、`PUBLIC_PORTAL_GA_ID`）
 
 `PUBLIC_` プレフィックスはクライアント側に公開される値（Vite/Astro 慣習）。サーバ専用にしたい変数を後から増やす場合は `PUBLIC_` を付けずに書く。
 
