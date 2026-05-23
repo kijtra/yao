@@ -4,10 +4,11 @@
 Workers Builds の GitHub 連携で push → 自動ビルド → 自動デプロイ。
 リポジトリは monorepo (`yao`)、Root directory をサイトごとに変えて1リポジトリから複数 Workers プロジェクトを生やす構成。
 
-| サブサイト | リポジトリ内パス | Workers プロジェクト名 | 公開URL |
-|---|---|---|---|
-| loan-calc | `/loan-calc` | `loan-calc` | `https://loan-calc.yao.tools` |
-| （将来）salary-calc | `/salary-calc` | `salary-calc` | `https://salary-calc.yao.tools` |
+| サイト | リポジトリ内パス | Workers プロジェクト名 | 公開URL | 役割 |
+|---|---|---|---|---|
+| portal | `/portal` | `portal` | `https://yao.tools` | ハブ。AdSense ルート要件 + ブランド面 |
+| loan-calc | `/loan-calc` | `loan-calc` | `https://loan-calc.yao.tools` | ローン計算ツール |
+| （将来）salary-calc | `/salary-calc` | `salary-calc` | `https://salary-calc.yao.tools` | 給与計算（予定） |
 
 ## なぜ Pages ではなく Workers？
 
