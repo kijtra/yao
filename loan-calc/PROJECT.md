@@ -285,9 +285,9 @@ function calcEqualPayment(
 - 「概算であり実際の借入額を保証するものではない」旨を明記
 - YMYL領域なので、誤情報は致命的
 
-## 現在の進捗と次のステップ（最終更新: 2026-05-22）
+## 現在の進捗と次のステップ（最終更新: 2026-05-23）
 
-### 完了済（住宅ローン MVP + SEO 基盤 + 公開準備）
+### 完了済（住宅ローン MVP + SEO 基盤 + 公開）
 
 **計算ロジック**
 - `calcEqualPayment`: 元利均等返済（万円→円換算、金利0% 対応）
@@ -314,24 +314,23 @@ function calcEqualPayment(
 - 共通: `PUBLIC_OWNER_NAME`、`PUBLIC_CONTACT_FORM_URL`
 - サイト別: `PUBLIC_<SITE>_GA_ID`（prefix で識別）
 
-### 保留事項（実値未設定）
+### 本番公開・解析基盤（2026-05-23 完了）
 
-- **本番ドメイン** = `https://loan-calc.yao.tools`（取得済 / Cloudflare Pages のカスタムドメイン設定は未実施）
-  - `astro.config.mjs` の `site` および `public/robots.txt` の Sitemap URL は本番URLに設定済
-  - Cloudflare Pages 側で `loan-calc.yao.tools` を当該プロジェクトに紐付ける作業が残っている
-- **`PUBLIC_OWNER_NAME`** = `.env` で「やおツールズ」を設定する想定（運営者名 = ブランド名）
-- **`PUBLIC_CONTACT_FORM_URL`** = Google フォーム未作成、URL 未取得
-- **`PUBLIC_LOAN_CALC_GA_ID`** = GA4 プロパティ未取得
+- **本番ドメイン** = `https://loan-calc.yao.tools` で稼働中（Cloudflare Workers Static Assets、GitHub 連携の Workers Builds で自動デプロイ）
+- **`PUBLIC_OWNER_NAME`** = 「やおツールズ」を Workers の Build 環境変数に設定
+- **`PUBLIC_CONTACT_FORM_URL`** = Google フォーム（`https://forms.gle/jVnHgBpDc7Q5giaEA`）に紐付け、contact ページから到達可能
+- **`PUBLIC_LOAN_CALC_GA_ID`** = GA4 プロパティ `G-G8ECYM8W47` を本番ビルドで注入
+- **Search Console** = `yao.tools` ルートのドメインプロパティで認証済、sitemap-index.xml 送信済
+- **デプロイ手順は親 `niche-sites/DEPLOY.md` に外出し**（Workers Builds の設定値、カスタムドメイン、Search Console 登録、新サイト追加時の手順まで）
 
-### 次にやることの候補（順不同）
+### 次にやることの候補（優先度順）
 
-1. **Cloudflare Pages デプロイ** = サイトを実環境で公開、Search Console / GA4 と連携できる状態に
-2. **Google フォーム作成 + GA4 プロパティ取得** = `.env` に実値投入、解析・問い合わせ開始
-3. **解説記事10本（`articles/`）** = AdSense 審査のコンテンツ要件、最も時間がかかる
-4. **マイカーローン展開** = `car/` 一式（home の構造を流用、84パターン）
-5. **カードローン展開** = `card/` 一式（120パターン、リボ計算ロジック追加）
-6. **og:image 動的生成** = SNS シェア時の見た目向上
-7. **モバイル実機確認** = レスポンシブの最終チェック
+1. **マイカーローン展開（`car/` 一式）** ← 次に着手予定。home/ の構造を流用、URL設計とパラメータ範囲は別途仕様化（IDEAS.md / 本ファイルに追記）
+2. **解説記事10本（`articles/`）** = AdSense 審査のコンテンツ要件、最も時間がかかる本丸
+3. **カードローン展開（`card/` 一式）** = 120パターン、リボ計算ロジック追加
+4. **og:image 動的生成** = パターン別の数値入り画像、SNS シェア時のクリック率向上
+5. **モバイル実機確認** = レスポンシブ最終チェック
+6. **2サイト目（salary-calc など）の立ち上げ** = サブドメイン運用の動作実証
 
 ### 開発方針メモ
 
