@@ -1,1 +1,107 @@
 @import "tailwindcss";
+
+/* 解説記事本文の typography。
+ * Tailwind v4 + @tailwindcss/typography の v4 対応が安定するまでは自前で。
+ * 必要に応じてここに見出し・段落・リスト・コードのスタイルを追加していく。 */
+.article-prose {
+  color: var(--color-slate-700);
+  line-height: 1.8;
+}
+
+.article-prose h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-slate-900);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-slate-200);
+}
+
+.article-prose h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-slate-900);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+
+.article-prose p {
+  margin: 1rem 0;
+}
+
+.article-prose ul,
+.article-prose ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.article-prose ul {
+  list-style-type: disc;
+}
+
+.article-prose ol {
+  list-style-type: decimal;
+}
+
+.article-prose li {
+  margin: 0.25rem 0;
+}
+
+.article-prose a {
+  color: var(--color-slate-900);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.article-prose a:hover {
+  text-decoration: none;
+}
+
+.article-prose strong {
+  color: var(--color-slate-900);
+  font-weight: 700;
+}
+
+.article-prose code {
+  background-color: var(--color-slate-100);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+}
+
+.article-prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 4px solid var(--color-slate-300);
+  background-color: var(--color-slate-50);
+  color: var(--color-slate-600);
+  font-style: italic;
+}
+
+.article-prose table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.article-prose th,
+.article-prose td {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--color-slate-200);
+  text-align: left;
+}
+
+.article-prose th {
+  background-color: var(--color-slate-50);
+  font-weight: 700;
+  color: var(--color-slate-900);
+}
+
+.article-prose hr {
+  margin: 2.5rem 0;
+  border: 0;
+  border-top: 1px solid var(--color-slate-200);
+}
