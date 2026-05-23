@@ -28,6 +28,9 @@ const currentYear = new Date().getFullYear();
 const gaId = import.meta.env.PUBLIC_LOAN_CALC_GA_ID;
 const enableGa = import.meta.env.PROD && !!gaId;
 
+const adsenseClientId = import.meta.env.PUBLIC_ADSENSE_CLIENT_ID;
+const enableAdsense = import.meta.env.PROD && !!adsenseClientId;
+
 const breadcrumbJsonLd =
   breadcrumb && breadcrumb.length > 0
     ? {
@@ -86,6 +89,15 @@ const breadcrumbJsonLd =
           gtag('config', gaId);
         </script>
       </>
+    )}
+
+    {enableAdsense && (
+      <script
+        is:inline
+        async
+        src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClientId}`}
+        crossorigin="anonymous"
+      ></script>
     )}
   </head>
   <body class="min-h-screen bg-slate-50 text-slate-900">
