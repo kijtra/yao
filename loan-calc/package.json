@@ -2,8 +2,10 @@
   "name": "loan-calc",
   "type": "module",
   "version": "0.0.1",
+  "packageManager": "pnpm@11.2.2",
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=22.12.0",
+    "pnpm": ">=11.0.0"
   },
   "scripts": {
     "dev": "astro dev",
