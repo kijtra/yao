@@ -66,6 +66,39 @@ CF DNS 管理下なので自動で済む:
 - `https://loan-calc.yao.tools/robots.txt` の Sitemap 行が本番URLを指している
 - 任意の `home/<params>/` ページの canonical / OGP / BreadcrumbList JSON-LD が本番URLになっている
 
+## 4. Search Console 登録
+
+サブドメイン運用のため **`yao.tools` ルートでドメインプロパティを 1 つ作る** 方針。配下のサブドメイン（`loan-calc.yao.tools` 等）はルートプロパティの所有権が自動継承されるので、サブドメイン側で追加の TXT 認証は不要。
+
+### 4.1 ルートドメインプロパティの作成（初回のみ）
+
+1. Search Console → **プロパティを追加** → 「ドメイン」を選択
+2. `yao.tools` を入力 → 続行
+3. 提示される TXT トークン（`google-site-verification=...`）を控える
+4. Cloudflare DNS で **Name: `@`（ルート）**、Type: `TXT`、Content: トークン値、で追加
+5. 数分待って Search Console の「確認」ボタンを押す
+
+**注意:** サブドメイン単体のドメインプロパティに対して TXT 認証を試みると Google の確認チェックが回らないケースがある（30 分以上待っても通らないことあり）。**先にルートを認証してから、必要に応じてサブドメイン側のプロパティを追加する**順序が確実。
+
+### 4.2 サブドメインのプロパティ追加（必要に応じて）
+
+サブドメインごとに分析を分けたい場合のみ:
+
+1. Search Console → プロパティを追加 → 「ドメイン」 → `<site>.yao.tools` を入力
+2. ルートが認証済なら、追加した瞬間「確認済み」になる（TXT 追加不要、所有権継承）
+
+サイト数が少ないうちは `yao.tools` ルートプロパティ 1 つで全サブドメイン横断で見る方がシンプル。
+
+### 4.3 sitemap 送信
+
+プロパティの **サイトマップ** メニューから:
+
+| 入力欄 | 値 |
+|---|---|
+| URL | `https://loan-calc.yao.tools/sitemap-index.xml`（フルURL） |
+
+送信後 24 時間程度で sitemap が読み込まれ、登録 URL 数（loan-calc なら 245）が反映される。
+
 ## 新サイト追加時の手順
 
 1. リポジトリに新サイトディレクトリを追加（例: `salary-calc/`）。`loan-calc/` の構成を雛形にする:
