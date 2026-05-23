@@ -1,0 +1,70 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const ownerName = import.meta.env.PUBLIC_OWNER_NAME || "やおツールズ";
+---
+
+<BaseLayout
+  title="やおツールズ について | 運営者情報"
+  description="やおツールズの運営者情報・運営方針・サイト全体の構成に関する情報をまとめたページです。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "やおツールズ について" },
+  ]}
+>
+  <article>
+    <h1 class="text-3xl font-bold tracking-tight">やおツールズ について</h1>
+
+    <p class="mt-4 text-slate-700">
+      「やおツールズ」は、住宅ローン・マイカーローンなど特定ジャンルに特化した計算ツールを提供する個人運営のサイト群です。各ジャンルごとにサブドメインを分けて運用しており、それぞれが独立したサイトとして機能しています。
+    </p>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">運営者</h2>
+      <p class="text-slate-700">{ownerName}（個人運営）</p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">サイトの目的</h2>
+      <p class="text-slate-700">
+        日常生活の意思決定に必要な「ちょっとした計算」を、誰でも気軽に行えるツールとして提供することを目的としています。住宅ローン・マイカーローンの返済シミュレーションなど、典型的な条件パターンを事前に用意し、URL を共有するだけで同じ条件のシミュレーション結果を他の人と共有できる設計にしています。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">運営方針</h2>
+      <p class="text-slate-700">
+        やおツールズはあえてジャンルごとにサブサイトを独立させる構成をとっています。住宅ローンと給与計算のように、利用者の関心や必要な情報の深さが異なるツールを別サイトに分けることで、それぞれの利用者にとって余計な情報のないシンプルな導線と、ジャンル特有の解説を提供することを目指しています。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">提供中のサイト</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>
+          <a href="https://loan-calc.yao.tools/" class="text-slate-900 underline hover:no-underline">
+            ローン計算ツール集（loan-calc.yao.tools）
+          </a>
+          ：住宅ローン・マイカーローンの返済シミュレーション
+        </li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">サイトの信頼性について</h2>
+      <p class="text-slate-700">
+        各ツールの計算結果は概算値であり、実際の借入条件や税額は金融機関・公的機関の最終判断によって決まります。表示される数字は意思決定の参考情報として活用し、最終的な判断はご自身の責任で行ってください。
+      </p>
+      <p class="text-slate-700">
+        やおツールズは特定の金融機関や金融商品を推奨するものではなく、各ジャンルにおいて中立的な情報提供を心がけています。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">お問い合わせ</h2>
+      <p class="text-slate-700">
+        ご意見・ご指摘などは <a href="/contact/" class="text-slate-900 underline hover:no-underline">お問い合わせページ</a> からご連絡ください。
+      </p>
+    </section>
+  </article>
+</BaseLayout>

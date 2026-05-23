@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const ownerName = import.meta.env.PUBLIC_OWNER_NAME || "やおツールズ";
+const contactFormUrl = import.meta.env.PUBLIC_CONTACT_FORM_URL;
+---
+
+<BaseLayout
+  title="お問い合わせ | やおツールズ"
+  description={`${ownerName} へのお問い合わせフォーム。計算結果の指摘・機能改善のご要望などはこちらからご連絡ください。`}
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "お問い合わせ" },
+  ]}
+>
+  <article>
+    <h1 class="text-3xl font-bold tracking-tight">お問い合わせ</h1>
+
+    <p class="mt-4 text-slate-700">
+      {ownerName} へのお問い合わせは、以下の Google フォームをご利用ください。やおツールズおよび配下サイト（loan-calc.yao.tools など）すべてのご意見・ご指摘を共通で受け付けています。
+    </p>
+
+    {contactFormUrl ? (
+      <div class="mt-6">
+        <a
+          href={contactFormUrl}
+          rel="noopener noreferrer"
+          target="_blank"
+          class="inline-block rounded-md bg-slate-900 px-5 py-3 text-base font-medium text-white transition hover:bg-slate-700"
+        >
+          お問い合わせフォームを開く →
+        </a>
+      </div>
+    ) : (
+      <p class="mt-6 rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        お問い合わせフォームを準備中です。しばらくお待ちください。
+      </p>
+    )}
+
+    <section class="mt-10 space-y-2">
+      <h2 class="text-xl font-bold">受付内容の例</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>計算結果の指摘・誤りの報告</li>
+        <li>機能改善のご要望</li>
+        <li>新機能・新サイトのリクエスト</li>
+        <li>その他、サイト運営に関するご質問</li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">受付できない内容</h2>
+      <ul class="list-disc space-y-1 pl-6 text-slate-700">
+        <li>個別の金融相談・税務相談</li>
+        <li>特定企業・サービスの評価に関するお問い合わせ</li>
+        <li>取材・広告掲載のご依頼（現時点では対応しておりません）</li>
+      </ul>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">返信について</h2>
+      <p class="text-slate-700">
+        お問い合わせ内容によっては、返信までお時間をいただく場合がございます。また、内容によっては返信を行わない場合がございますので、あらかじめご了承ください。
+      </p>
+    </section>
+  </article>
+</BaseLayout>

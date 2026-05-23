@@ -1,0 +1,15 @@
+{
+  // VSCode で補完を効かせるための JSON Schema 指定。
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  // Workers プロジェクトの識別名。CF ダッシュボードでの表示名。
+  "name": "portal",
+
+  // Workers ランタイムの API 挙動をどの時点で固定するかの日付。
+  "compatibility_date": "2026-05-23",
+
+  // Static Assets 配信設定。Astro のビルド出力をそのままアップロードする。
+  "assets": {
+    "directory": "./dist"
+  }
+}

@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    href: "https://loan-calc.yao.tools/",
+    title: "ローン計算ツール集",
+    desc: "住宅ローン・マイカーローンの返済シミュレーションを、借入条件を選ぶだけで実行できるツール集。元利均等返済方式での月々返済額・総返済額・利息総額と、年次返済表を確認できます。",
+    ready: true,
+  },
+];
+---
+
+<BaseLayout
+  title="やおツールズ | ニッチな計算ツールの集積地"
+  description="やおツールズは、住宅ローン・マイカーローンなど特定ジャンルに特化した計算ツールを提供する個人運営のサイト群です。借入条件を選ぶだけで月々返済額や総返済額をシミュレーションできます。"
+>
+  <section class="space-y-3">
+    <h1 class="text-4xl font-bold tracking-tight">やおツールズ</h1>
+    <p class="text-lg text-slate-600">
+      ニッチな計算ツールを揃えた個人運営のサイト群です。特定ジャンルに特化することで、入力条件と結果の解説まで含めて使いやすい設計を目指しています。
+    </p>
+  </section>
+
+  <section class="mt-10">
+    <h2 class="mb-4 text-xl font-bold">提供中のツール</h2>
+    <ul class="grid gap-4 sm:grid-cols-2">
+      {
+        tools.map((tool) => (
+          <li>
+            <a
+              href={tool.href}
+              class="block h-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-slate-400 hover:shadow"
+            >
+              <h3 class="text-lg font-bold text-slate-900">{tool.title}</h3>
+              <p class="mt-2 text-sm text-slate-600">{tool.desc}</p>
+              <p class="mt-3 text-xs text-slate-500">→ サイトを開く</p>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="mt-12 space-y-3 text-slate-700">
+    <h2 class="text-xl font-bold">やおツールズの方針</h2>
+    <p>
+      多くの計算ツールサイトは「あらゆる計算を一つのサイトで」という方向で作られていますが、やおツールズはあえて<strong>ジャンルごとにサイトを独立させる</strong>方針をとっています。
+    </p>
+    <p>
+      たとえば住宅ローンを調べに来た人と、マイカーローンを調べに来た人とでは、知りたい情報の深さも比較したい条件も異なります。サイトを分けることで、それぞれの利用者にとって余計な情報のないシンプルな導線と、ジャンル特有の解説を提供できます。
+    </p>
+    <p>
+      現時点で公開しているのはローン計算ツール集の1サイトだけですが、今後は給与計算・税金計算など、生活設計に役立つツールを順次追加していく予定です。
+    </p>
+  </section>
+
+  <section class="mt-12 space-y-3 text-slate-700">
+    <h2 class="text-xl font-bold">運営者からのお願い</h2>
+    <p>
+      各ツールの計算結果はあくまで概算で、実際の借入条件や税額は金融機関・公的機関の最終判断によって決まります。表示される数字は意思決定の参考情報として活用し、最終的な判断はご自身の責任で行ってください。
+    </p>
+    <p>
+      計算結果の誤りや改善要望は、<a href="/contact/" class="text-slate-900 underline hover:no-underline">お問い合わせ</a>からご連絡ください。
+    </p>
+  </section>
+</BaseLayout>

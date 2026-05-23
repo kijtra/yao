@@ -1,0 +1,115 @@
+---
+import "../styles/global.css";
+
+interface BreadcrumbItem {
+  name: string;
+  /** 絶対URLまたはサイト内パス。省略すると「現在ページ」扱いで item は出力されない */
+  url?: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  ogType?: "website" | "article";
+  /** OG画像のパス（site相対）または絶対URL。未指定なら /og-image.png */
+  ogImage?: string;
+  breadcrumb?: BreadcrumbItem[];
+}
+
+const { title, description, ogType = "website", ogImage = "/og-image.png", breadcrumb } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImageUrl = ogImage.startsWith("http")
+  ? ogImage
+  : new URL(ogImage, Astro.site).toString();
+const siteName = "やおツールズ";
+const ownerName = import.meta.env.PUBLIC_OWNER_NAME || "やおツールズ";
+const currentYear = new Date().getFullYear();
+
+const gaId = import.meta.env.PUBLIC_PORTAL_GA_ID;
+const enableGa = import.meta.env.PROD && !!gaId;
+
+const breadcrumbJsonLd =
+  breadcrumb && breadcrumb.length > 0
+    ? {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: breadcrumb.map((item, idx) => ({
+          "@type": "ListItem",
+          position: idx + 1,
+          name: item.name,
+          ...(item.url ? { item: new URL(item.url, Astro.site).toString() } : {}),
+        })),
+      }
+    : null;
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={title} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    {description && <meta name="twitter:description" content={description} />}
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    {breadcrumbJsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+    )}
+
+    {enableGa && (
+      <>
+        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+        <script is:inline define:vars={{ gaId }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-900">
+    <header class="border-b border-slate-200 bg-white">
+      <div class="mx-auto max-w-4xl px-4 py-3">
+        <a href="/" class="text-lg font-bold hover:text-slate-600">
+          やおツールズ
+        </a>
+      </div>
+    </header>
+    <main class="mx-auto max-w-4xl px-4 py-8">
+      <slot />
+    </main>
+    <footer class="mt-12 border-t border-slate-200 bg-white">
+      <div class="mx-auto max-w-4xl px-4 py-6">
+        <nav aria-label="フッターナビゲーション" class="flex flex-wrap gap-x-4 gap-y-2 text-sm text-slate-600">
+          <a href="/about/" class="hover:text-slate-900 hover:underline">運営者情報</a>
+          <a href="/privacy/" class="hover:text-slate-900 hover:underline">プライバシーポリシー</a>
+          <a href="/contact/" class="hover:text-slate-900 hover:underline">お問い合わせ</a>
+        </nav>
+        <p class="mt-3 text-xs text-slate-500">
+          &copy; {currentYear} {ownerName}
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

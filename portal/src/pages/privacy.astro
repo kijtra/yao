@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const lastUpdated = "2026年5月23日";
+---
+
+<BaseLayout
+  title="プライバシーポリシー | やおツールズ"
+  description="やおツールズのプライバシーポリシー。アクセス解析（Google Analytics 4）・広告配信（Google AdSense）・Cookie の取り扱い・免責事項について記載しています。"
+  breadcrumb={[
+    { name: "トップ", url: "/" },
+    { name: "プライバシーポリシー" },
+  ]}
+>
+  <article>
+    <h1 class="text-3xl font-bold tracking-tight">プライバシーポリシー</h1>
+
+    <p class="mt-4 text-slate-700">
+      「やおツールズ」（以下、本サイト）の運営者は、本サイトおよびサブドメイン配下の各サイトを利用する皆様のプライバシーを尊重し、その取り扱いに細心の注意を払います。本ポリシーでは、本サイトが収集する情報と、その利用方法について記載しています。
+    </p>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">適用範囲</h2>
+      <p class="text-slate-700">
+        本ポリシーは、やおツールズ（yao.tools）および配下のサブドメイン（loan-calc.yao.tools など）を含むすべてのサイトに適用されます。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">収集する情報</h2>
+      <p class="text-slate-700">
+        本サイトは、計算機能の利用にあたって個人情報（氏名・住所・メールアドレス等）の入力を求めません。利用者がフォームに入力した数値は、ブラウザ上で計算に使用されるのみで、本サイトのサーバーには送信・保存されません。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">アクセス解析ツールの利用</h2>
+      <p class="text-slate-700">
+        本サイトでは、サイト改善のために Google Analytics 4（GA4）を利用しています。GA4 は Cookie を用いて利用者のアクセス情報を匿名で収集します。収集される情報の例: ページの閲覧履歴、滞在時間、参照元 URL、デバイス・ブラウザ情報など。
+      </p>
+      <p class="text-slate-700">
+        GA4 によるデータ収集を拒否したい方は、Google が提供する
+        <a href="https://tools.google.com/dlpage/gaoptout?hl=ja" rel="noopener noreferrer" class="text-slate-900 underline hover:no-underline">
+          Google アナリティクス オプトアウト アドオン
+        </a>
+        をご利用ください。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">広告配信について</h2>
+      <p class="text-slate-700">
+        本サイトおよび配下のサイトでは、Google AdSense をはじめとする第三者広告配信サービスを利用することがあります。これらの広告配信事業者は、利用者の興味に応じた商品やサービスの広告を表示するため、Cookie を使用して本サイトや他サイトへのアクセス情報を収集することがあります。
+      </p>
+      <p class="text-slate-700">
+        Cookie を使用した広告のカスタマイズを無効にしたい方は、Google が提供する
+        <a href="https://www.google.com/settings/ads" rel="noopener noreferrer" class="text-slate-900 underline hover:no-underline">
+          広告設定ページ
+        </a>
+        から設定を変更できます。
+      </p>
+      <p class="text-slate-700">
+        また、第三者ベンダーが配信する広告に関する設定は、
+        <a href="https://www.aboutads.info/" rel="noopener noreferrer" class="text-slate-900 underline hover:no-underline">
+          aboutads.info
+        </a>
+        から確認・変更が可能です。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">Cookie について</h2>
+      <p class="text-slate-700">
+        本サイトでは前述の GA4 によるアクセス解析および広告配信のために Cookie を使用しています。ブラウザの設定により Cookie の受信を拒否することも可能ですが、その場合、本サイトの一部機能や広告のパーソナライズが正常に動作しない可能性があります。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">免責事項</h2>
+      <p class="text-slate-700">
+        本サイトおよび配下のサイトに掲載されている計算結果・解説情報はすべて概算・一般的な情報であり、特定の金融機関や金融商品の借入条件・税額・公的給付などを保証するものではありません。本サイトの情報を利用したことによって発生した損害について、運営者は一切の責任を負いません。
+      </p>
+    </section>
+
+    <section class="mt-8 space-y-2">
+      <h2 class="text-xl font-bold">プライバシーポリシーの変更</h2>
+      <p class="text-slate-700">
+        本ポリシーの内容は、必要に応じて変更されることがあります。重要な変更があった場合は、本ページで通知します。
+      </p>
+    </section>
+
+    <p class="mt-10 text-sm text-slate-500">最終更新日: {lastUpdated}</p>
+  </article>
+</BaseLayout>

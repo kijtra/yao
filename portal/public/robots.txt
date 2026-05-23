@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://yao.tools/sitemap-index.xml
