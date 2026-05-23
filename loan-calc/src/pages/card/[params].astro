@@ -220,6 +220,25 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
   </section>
 
   <section class="mt-10">
+    <h2 class="text-xl font-bold">カードローンの解説記事</h2>
+    <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+      {[
+        { slug: "bank-vs-consumer-finance-card-loan", title: "銀行カードローンと消費者金融の違い" },
+        { slug: "revolving-vs-card-loan", title: "リボ払いとカードローンの違い" },
+        { slug: "card-loan-early-repayment", title: "繰上返済の効果：高金利だからこそ効く" },
+        { slug: "regulation-and-interest-rate-cap", title: "総量規制と利息制限法の基礎知識" },
+        { slug: "debt-consolidation-loan", title: "おまとめローンの判断基準" },
+      ].map((a) => (
+        <li>
+          <a href={`/articles/${a.slug}/`} class="block rounded-lg border border-slate-200 bg-white p-3 text-sm hover:border-slate-400 hover:shadow-sm">
+            {a.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-10">
     <a
       href="/card/"
       class="inline-block rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-500"

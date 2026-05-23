@@ -220,6 +220,23 @@ const titleHead = `${amount.toLocaleString()}万円・${years}年・金利${rate
   </section>
 
   <section class="mt-10">
+    <h2 class="text-xl font-bold">マイカーローンの解説記事</h2>
+    <ul class="mt-4 grid gap-2 sm:grid-cols-2">
+      {[
+        { slug: "bank-vs-dealer-car-loan", title: "銀行系とディーラー系ローンの違い" },
+        { slug: "residual-value-car-loan", title: "残価設定型ローンの仕組みと注意点" },
+        { slug: "used-car-loan-strategy", title: "中古車ローンの金利・期間設定のポイント" },
+      ].map((a) => (
+        <li>
+          <a href={`/articles/${a.slug}/`} class="block rounded-lg border border-slate-200 bg-white p-3 text-sm hover:border-slate-400 hover:shadow-sm">
+            {a.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section class="mt-10">
     <a
       href="/car/"
       class="inline-block rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:border-slate-500"
