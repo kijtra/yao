@@ -102,3 +102,52 @@ export function buildCarInsights(input: LoanInput): string[] {
     carRateInsight(input.rate),
   ];
 }
+
+// === カードローン用 ===
+
+function cardAmountInsight(amount: number): string {
+  if (amount <= 30) {
+    return "急な出費や家電購入、生活費の補完として現実的な金額帯です。短期で返し切れる目安の規模感です。";
+  }
+  if (amount <= 100) {
+    return "引越し費用・医療費・冠婚葬祭など、まとまった支出に対応するための金額帯です。";
+  }
+  if (amount <= 200) {
+    return "おまとめローンや事業性に近い借入として使われることが多い金額帯です。総量規制（年収の3分の1）との関係を確認したい水準です。";
+  }
+  return "カードローンとしては高額の領域です。総量規制（消費者金融の場合は年収の3分の1まで）の制限内かどうかを確認する必要があります。";
+}
+
+function cardYearsInsight(years: number): string {
+  if (years <= 1) {
+    return "短期返済の設定で、月々の負担は重くなりますが利息総額を最小限に抑えられます。ボーナス時に一括返済する想定にも近いプランです。";
+  }
+  if (years <= 3) {
+    return "カードローンとして一般的な返済期間です。月々の負担と総利息のバランスが取りやすい設定です。";
+  }
+  return "長期返済の設定で、月々の負担を抑える代わりに利息総額が大きく膨らみます。借入額が大きい場合に選ばれる傾向があります。";
+}
+
+function cardRateInsight(rate: number): string {
+  if (rate <= 5) {
+    return "銀行カードローンの優遇金利水準です。借入額が比較的大きく、属性が良好なケースで適用されることが多い帯です。";
+  }
+  if (rate < 10) {
+    return "銀行カードローンの標準的な金利水準です。";
+  }
+  if (rate < 15) {
+    return "銀行カードローンの上位帯、または消費者金融の低位の金利帯です。";
+  }
+  if (rate < 18) {
+    return "消費者金融や銀行カードローンの中位〜上位の金利帯で、利息制限法上限に近い水準です。";
+  }
+  return "利息制限法の上限金利（10〜100万円帯では18%）に達する水準です。消費者金融の上限金利の試算でよく使われる値です。";
+}
+
+export function buildCardInsights(input: LoanInput): string[] {
+  return [
+    cardAmountInsight(input.amount),
+    cardYearsInsight(input.years),
+    cardRateInsight(input.rate),
+  ];
+}

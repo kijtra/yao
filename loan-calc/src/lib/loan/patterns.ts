@@ -46,3 +46,26 @@ export function carPatterns(): LoanInput[] {
   }
   return out;
 }
+
+// === カードローン ===
+
+export const CARD_AMOUNTS = [10, 30, 50, 100, 200, 300] as const;
+export const CARD_YEARS = [1, 2, 3, 5] as const;
+export const CARD_RATES = [3.0, 5.0, 10.0, 15.0, 18.0] as const;
+
+/**
+ * カードローンの全生成パターン（6 × 4 × 5 = 120件）。
+ * 計算方式は元利均等返済方式（市場の主流に合わせる）。
+ * リボ払い（定額リボ）の計算ロジックは別物だが、本ツールでは扱わない。
+ */
+export function cardPatterns(): LoanInput[] {
+  const out: LoanInput[] = [];
+  for (const amount of CARD_AMOUNTS) {
+    for (const years of CARD_YEARS) {
+      for (const rate of CARD_RATES) {
+        out.push({ amount, years, rate });
+      }
+    }
+  }
+  return out;
+}
